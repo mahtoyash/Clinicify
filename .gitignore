@@ -4,3 +4,4 @@ node_modules/
 .env.local
 .secrets/
 coverage/
+tsconfig.tsbuildinfo

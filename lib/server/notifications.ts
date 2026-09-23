@@ -28,10 +28,22 @@ export async function sendNotification(input: {
     return;
   }
 
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("[Notifications] RESEND_API_KEY is missing. Skipping email.");
+    await record.update({ status: "skipped", reason: "RESEND_API_KEY missing" });
+    return;
+  }
+
+  if (!process.env.RESEND_FROM_EMAIL) {
+    console.warn("[Notifications] RESEND_FROM_EMAIL is missing. Skipping email.");
+    await record.update({ status: "skipped", reason: "RESEND_FROM_EMAIL missing" });
+    return;
+  }
+
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const result = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL!,
+      from: process.env.RESEND_FROM_EMAIL,
       to: input.recipient,
       subject: input.subject,
       html: input.html,

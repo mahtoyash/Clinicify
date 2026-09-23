@@ -30,6 +30,13 @@ const ROLE_META: Record<Role, { icon: string; label: string; desc: string; color
   pharmacist:  { icon: "💊", label: "Pharmacist",   desc: "Dispense medicines & generate bills", colorClass: "pharma"  },
 };
 
+const DEMO_CREDENTIALS: Record<Role, { email: string; password: string }> = {
+  admin: { email: "admin@clinicify.test", password: "A12345678" },
+  doctor: { email: "doctor@clinicify.test", password: "D12345678" },
+  receptionist: { email: "reception@clinicify.test", password: "R12345678" },
+  pharmacist: { email: "pharmacy@clinicify.test", password: "P12345678" },
+};
+
 /* ── Toast ──────────────────────────────────────── */
 type ToastMsg = { id: number; text: string; type: "success" | "error" | "info" };
 
@@ -274,6 +281,20 @@ function LandingPage({ notify }: { notify: (msg: string, type?: ToastMsg["type"]
                 <button className="auth-btn-split" disabled={loading}>
                   {loading && <span className="btn-spinner" />}
                   {loading ? "Signing in…" : "Sign In to Workspace"}
+                </button>
+
+                <button 
+                  type="button"
+                  className="auth-btn-split" 
+                  disabled={loading}
+                  onClick={() => {
+                    const creds = DEMO_CREDENTIALS[authStep.role];
+                    setEmail(creds.email);
+                    setPassword(creds.password);
+                  }}
+                  style={{ marginTop: 12, backgroundColor: "transparent", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.8)" }}
+                >
+                  Fill Demo Credentials
                 </button>
 
                 <div className="auth-footer-note">
